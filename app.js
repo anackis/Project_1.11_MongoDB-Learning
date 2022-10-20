@@ -7,9 +7,7 @@ mongoose.connect('mongodb://localhost:27017/pets');
 
 
 
-
-
-const Cat = mongoose.model('Cat', { 
+const catSchema = new mongoose.Schema ({ 
 	name: {
 		type: String,
 		required: [true, "Please enter name"]
@@ -20,21 +18,38 @@ const Cat = mongoose.model('Cat', {
 		max: 10
 	}
 	});
-const kitty = new Cat({ name: 'Mjau'});
+const Cat = mongoose.model('Cat', catSchema);
+// const kitty = new Cat({ name: 'Mjau'});
 
 const dog = new Cat({
-	name: "Doggu",
-	rating: 8
+	name: "Error",
+	rating: 2
 });
 
-const Owner = mongoose.model('Owner', { name: String, favouritePet: Cat});
+const snake = new Cat({
+	name: "Python",
+	rating: 9
+});
+
+
+const ownerSchema = new mongoose.Schema ({ name: String, favouritePet: catSchema});
+const Owner = mongoose.model('Owner', ownerSchema);
 const ownername = new Owner({ name: 'Amy', favouritePet: dog});
 
 
+snake.save();
+
+Owner.updateOne({name: "BredPit"}, {favouritePet: snake}, function(err) {
+	if (err) {
+		console.log(err);
+	} else {
+		console.log("Succesfully updated the document! ");
+	}
+});
 
 
 
-ownername.save();
+
 // dog.save();
 // kitty.save();
 // ownername.save();
